@@ -1,3 +1,16 @@
+import org.apache.spark.SparkContext
+import org.apache.spark.mllib.evaluation.MulticlassMetrics
+import org.apache.spark.mllib.linalg.Vectors
+import org.apache.spark.mllib.regression._
+import org.apache.spark.mllib.tree.model._
+import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.SQLContext
+import play.api.libs.json.{Json, JsArray}
+import scala.collection.mutable.ArrayBuffer
+ 
+ //   model = decisionTreeModel(.................................)
+ 
+    val modelTree = model.toDebugString
  //    ------------------------------------- tree string to  json------------------
 
     def stringToJson() = {
@@ -14,7 +27,7 @@
     import scala.util.control._
     val loop = new Breaks
 
-    val modelTree = model.toDebugString
+    
     def parse(lines: ArrayBuffer[String]): JsArray = {
       var block = JsArray(Nil)
 
