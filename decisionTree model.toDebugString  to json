@@ -1,0 +1,59 @@
+ //    ------------------------------------- tree string to  json------------------
+
+    def stringToJson() = {
+      val arrayBuffer = new ArrayBuffer[String]
+    }
+
+    def popBuffer(arrayBuffer: ArrayBuffer[String]): String = {
+      val fistLine = arrayBuffer(0)
+      arrayBuffer.remove(0, 1)
+
+      fistLine
+    }
+
+    import scala.util.control._
+    val loop = new Breaks
+
+    val modelTree = model.toDebugString
+    def parse(lines: ArrayBuffer[String]): JsArray = {
+      var block = JsArray(Nil)
+
+      loop.breakable {
+        while (lines.nonEmpty) {
+          if (lines(0).startsWith("If")) {
+
+            val bl = popBuffer(lines).split("If").tail.map { o =>
+              ' ' + o.replace("(", "").replace(")", "")
+            }
+
+            val ddd = Json.arr(Json.obj("name" -> bl.mkString, "values" -> "", "children" -> parse(lines)))
+            block = block ++ ddd
+
+            if (lines(0).startsWith("Else")) {
+              val be = popBuffer(lines).split("Else").tail.map { o =>
+                ' ' + o.replace("(", "").replace(")", "")
+              }
+              val dd1 = Json.arr(Json.obj("name" -> be.mkString, "values" -> "", "children" -> parse(lines)))
+              block = block ++ dd1
+            }
+
+          }
+          else if ((!lines(0).startsWith("If")) && (!lines(0).startsWith("Else"))) {
+            val block2 = popBuffer(lines)
+            block = block ++ Json.arr(Json.obj("name" -> block2))
+          }
+          else loop.break()
+
+        }
+      }
+
+      block
+    }
+    println("++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
+    val strBuffer = new ArrayBuffer[String]()
+    modelTree.split("\n").foreach(str => strBuffer.append(str.trim))
+//    print(strBuffer.foreach(println))
+    val back = parse(strBuffer)
+
+    println(Json.prettyPrint(back))
