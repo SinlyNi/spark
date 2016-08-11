@@ -1,0 +1,29 @@
+name := "readCassandra_companyRisk"
+
+version := "1.0"
+
+scalaVersion := "2.11.8"
+
+val varSpark = "1.6.0"
+
+libraryDependencies ++= Seq(
+  "org.scalanlp" %% "breeze" % "0.12",
+  "com.databricks" %% "spark-csv" % "1.4.0",
+  "org.apache.spark" %% "spark-sql" % varSpark/* % "provided"*/,
+  "org.apache.spark" %% "spark-core" % varSpark/* % "provided"*/,
+  "org.apache.spark" %% "spark-mllib" % varSpark,
+  "com.stratio.datasource" %% "spark-mongodb" % "0.11.1",
+  "org.mongodb.spark" %% "mongo-spark-connector" % "1.0.0",
+  "com.datastax.spark" %% "spark-cassandra-connector" % "1.6.0",
+  "com.typesafe.play" %% "play-json" % "2.5.4" exclude("com.fasterxml.jackson.core", "jackson-databind"), /* exclude() 屏蔽"com.fasterxml.jackson.core"里面的 "jackson-databind"　*/
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.4.4"
+
+//  "org.mongodb.scala" %% "mongo-scala-driver" % "1.1.0",
+//  "org.json4s" %% "json4s-jackson" % "3.4.0",
+//  "org.apache.hadoop" %% "hadoop-client" % "2.2.0"
+
+).map(
+  _.excludeAll(
+    ExclusionRule(organization = "org.mortbay.jetty")    /* excludeAll 屏蔽全部 ... */
+  )
+)
